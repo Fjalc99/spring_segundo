@@ -1,7 +1,7 @@
 package com.salesianostriana.dam.monumentos.repository;
 
 
-import com.salesianostriana.dam.monumentos.model.Monumentos;
+import com.salesianostriana.dam.monumentos.model.Monumento;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -12,41 +12,55 @@ import java.util.Optional;
 @Repository
 public class repositoryMonumentos {
 
-    private List<Monumentos> monumentos;
+    private List<Monumento> monumento;
 
     public repositoryMonumentos() {
-        monumentos = new ArrayList<Monumentos>();
+        monumento = new ArrayList<Monumento>();
+
+
+        monumento.add(
+                Monumento.builder()
+                        .id(1)
+                        .nombrePais("Spain")
+                        .nombreCiudad("Seville")
+                        .latitud("37° 20' 44.54376\" N ")
+                        .longitud(" 5° 58' 17.61925\" W")
+                        .nombreMonumento("Giralda")
+                        .descripcion("La Giralda es la torre campanario de la catedral de Santa María de la Sede de la ciudad de Sevilla, en Andalucía (España).")
+                        .imagen("https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/La_Giralda_August_2012_Seville_Spain.jpg/240px-La_Giralda_August_2012_Seville_Spain.jpg")
+                        .build()
+        );
 
     }
 
-    public List<Monumentos> findAll() {
-        return Collections.unmodifiableList(monumentos);
+    public List<Monumento> findAll() {
+        return Collections.unmodifiableList(monumento);
     }
 
-    public Optional<Monumentos> findById(int id) {
-        return monumentos.stream().filter(a -> a.getId() == id).findFirst();
+    public Optional<Monumento> findById(int id) {
+        return monumento.stream().filter(a -> a.getId() == id).findFirst();
     }
 
-    public Monumentos save(Monumentos m) {
-        monumentos.add(m);
+    public Monumento save(Monumento m) {
+        monumento.add(m);
         return m;
     }
 
-    public Monumentos edit(Monumentos m) {
+    public Monumento edit(Monumento m) {
         int pos;
         if ((pos = indexOf(m.getId())) == -1) {
             return save(m);
         }
         else {
-            return monumentos.set(pos, m);
+            return monumento.set(pos, m);
         }
     }
 
 
-    public void delete(Monumentos m) {
+    public void delete(Monumento m) {
         int pos;
         if ((pos = indexOf(m.getId())) != -1) {
-            monumentos.remove(pos);
+            monumento.remove(pos);
         }
     }
 
@@ -57,8 +71,8 @@ public class repositoryMonumentos {
 
         int pos = -1;
 
-        for(int i = 0; i < monumentos.size() && pos == -1; i++) {
-            if (monumentos.get(i).getId() == id)
+        for(int i = 0; i < monumento.size() && pos == -1; i++) {
+            if (monumento.get(i).getId() == id)
                 pos = i;
         }
 

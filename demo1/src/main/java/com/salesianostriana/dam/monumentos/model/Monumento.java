@@ -14,11 +14,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Monumentos {
+public class Monumento {
 
     @Id
     @GeneratedValue
-    private Long id;
+    private long id;
 
     private String codigoPais;
     private String nombrePais;
