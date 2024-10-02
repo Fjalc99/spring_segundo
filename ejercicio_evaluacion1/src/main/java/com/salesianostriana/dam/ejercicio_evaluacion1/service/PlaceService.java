@@ -20,18 +20,28 @@ public class PlaceService {
     }
 
     public Optional<Place> obtenerUno(Long id){
+
         return placeRepository.findById(id);
     }
 
 
-    public Place addPlace (Place p){
-        return  placeRepository.save(p);
+    public void addPlace (Place p){
+
+          placeRepository.save(p);
     }
 
-    public Place editarPlace(Place p){
-        return  placeRepository.save(p);
+    public Place editarPlace(Place place, Long id){
+
+        Place placeAntiguo = placeRepository.findById(id).orElse(null);
+
+        if (placeAntiguo != null) {
+            return placeRepository.save(place);
+        }
+        return place;
     }
 
-
+    public void eliminarPlace(Long id){
+        placeRepository.deleteById(id);
+    }
 
 }
