@@ -22,7 +22,7 @@ public class PlaceController {
         List<Place> places = placeService.obtenerTodos();
 
         if (places.isEmpty()) {
-            return ResponseEntity.noContent().build();
+            return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(places);
     }
@@ -47,7 +47,7 @@ public class PlaceController {
     }
 
     @DeleteMapping("/place/{id}")
-    public ResponseEntity<Place> eliminarPlace(@PathVariable Long id, @RequestBody Place place){
+    public ResponseEntity<?> eliminarPlace(@PathVariable Long id){
 
         if (placeRepository.existsById(id)){
             placeService.eliminarPlace(id);
@@ -58,5 +58,8 @@ public class PlaceController {
             return ResponseEntity.notFound().build();
         }
     }
+
+
+
 
 }
