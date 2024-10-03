@@ -1,6 +1,7 @@
 package com.salesianostriana.dam.monumentos.model;
 
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -18,7 +19,7 @@ public class Monumento {
 
     @Id
     @GeneratedValue
-    private long id;
+    private Long id;
 
     private String codigoPais;
     private String nombrePais;

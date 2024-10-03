@@ -17,7 +17,7 @@ public class MonumentosController {
     private final MonumentosRepository monumentosrepository;
 
 
-    private final MonumentosService monumentosservice;
+
     private final MonumentosService monumentosService;
 
 
