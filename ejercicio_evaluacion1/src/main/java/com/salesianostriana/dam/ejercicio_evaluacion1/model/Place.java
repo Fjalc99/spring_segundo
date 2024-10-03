@@ -1,7 +1,7 @@
 package com.salesianostriana.dam.ejercicio_evaluacion1.model;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -38,8 +38,9 @@ public class Place {
     private List <Tag> tags;
 
     public void addTag(Tag t) {
-        if (this.getTags()==null)
-        this.setTags((new ArrayList<>()));
+        if (this.getTags()==null) {
+            this.setTags((new ArrayList<>()));
+        }
         this.getTags().add(t);
 
         if (t.getPlaces()==null)
