@@ -15,21 +15,22 @@ public class TagService {
     @Autowired
     private TagRepository   tagRepository;
 
-    private List<Tag> obtenerTags(){
+    public List<Tag> obtenerTags(){
+
         return tagRepository.findAll();
     }
 
-    private Optional<Tag> obtenerTagId(Long id){
+    public Optional<Tag> obtenerTagId(Long id){
         return tagRepository.findById(id);
 
     }
 
-    private void guardarTag(Tag tag){
+    public void guardarTag(Tag tag){
         tagRepository.save(tag);
     }
 
 
-    private Tag editarTag(Tag tag, Long id){
+    public Tag editarTag(Tag tag, Long id){
         Tag nuevoTag = tagRepository.findById(id).orElse(null);
         if (nuevoTag != null){
             return tagRepository.save(tag);
@@ -38,7 +39,7 @@ public class TagService {
     }
 
 
-    private void eliminarTag(Long id){
+    public void eliminarTag(Long id){
 
         tagRepository.deleteById(id);
     }

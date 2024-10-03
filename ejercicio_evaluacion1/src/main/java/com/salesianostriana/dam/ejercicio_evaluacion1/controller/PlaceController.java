@@ -17,7 +17,7 @@ public class PlaceController {
     private final PlaceService placeService;
     private final PlaceRepository placeRepository;
 
-    @GetMapping("/places/")
+    @GetMapping("/place/")
     public ResponseEntity<List<Place>> obtenerTodos() {
         List<Place> places = placeService.obtenerTodos();
 
@@ -27,26 +27,26 @@ public class PlaceController {
         return ResponseEntity.ok(places);
     }
 
-    @GetMapping("/places/{id}")
+    @GetMapping("/place/{id}")
     public ResponseEntity<Place> obtenerUno(@PathVariable Long id){
 
         Place place = placeService.obtenerUno(id).orElse(null);
         return place != null ? ResponseEntity.ok(place): ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
-    @PostMapping("/places/")
+    @PostMapping("/place/")
     public ResponseEntity<Place> addPlace(@RequestBody Place place){
         Place nuevoPlace = placeRepository.save(place);
 
         return ResponseEntity.status(201).body(nuevoPlace);
     }
 
-    @PutMapping("/places/{id}")
+    @PutMapping("/place/{id}")
     public ResponseEntity<Place> editarPlace (@PathVariable Long id, @RequestBody Place place){
         return ResponseEntity.ok(placeService.editarPlace(place,id));
     }
 
-    @DeleteMapping("/places/{id}")
+    @DeleteMapping("/place/{id}")
     public ResponseEntity<Place> eliminarPlace(@PathVariable Long id, @RequestBody Place place){
 
         if (placeRepository.existsById(id)){
