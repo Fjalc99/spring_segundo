@@ -43,7 +43,10 @@ public class PlaceController {
 
     @PutMapping("/place/{id}")
     public ResponseEntity<Place> editarPlace (@PathVariable Long id, @RequestBody Place place){
-        return ResponseEntity.ok(placeService.editarPlace(place,id));
+        if (placeRepository.existsById(id)){
+            return ResponseEntity.ok(placeService.editarPlace(place,id));
+        }
+        return ResponseEntity.notFound().build();
     }
 
     @DeleteMapping("/place/{id}")
