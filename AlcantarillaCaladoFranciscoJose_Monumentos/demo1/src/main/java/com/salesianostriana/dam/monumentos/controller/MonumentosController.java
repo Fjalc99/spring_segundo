@@ -51,7 +51,10 @@ public class MonumentosController {
     @PutMapping("/monumento/{id}")
     public ResponseEntity<Monumento> editarMonumento(@PathVariable Long id, @RequestBody Monumento monumento) {
 
-        return ResponseEntity.ok(monumentosService.editarMonumento(monumento,id));
+        if (monumentosrepository.existsById(id)){
+            return ResponseEntity.ok(monumentosService.editarMonumento(monumento,id));
+        }
+            return ResponseEntity.notFound().build();
     }
 
     @DeleteMapping("/monumento/{id}")

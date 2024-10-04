@@ -2,8 +2,10 @@ package com.salesianostriana.dam.ejercicio_evaluacion1.model;
 
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -14,6 +16,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Place {
 
     @Id
@@ -33,6 +36,7 @@ public class Place {
     private String foto;
 
     @ManyToMany(fetch = FetchType.EAGER)
+    @JsonIgnoreProperties("places")
     @JoinTable(name="place_tag", joinColumns = @JoinColumn(name="place_id"), foreignKey = @ForeignKey(name = "FK_place_tag"),
      inverseJoinColumns  = @JoinColumn(name = "tag_id"))
     private List <Tag> tags;

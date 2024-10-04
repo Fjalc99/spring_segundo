@@ -1,8 +1,11 @@
 package com.salesianostriana.dam.ejercicio_evaluacion1.controller;
 
 import com.salesianostriana.dam.ejercicio_evaluacion1.model.Place;
+import com.salesianostriana.dam.ejercicio_evaluacion1.model.Tag;
 import com.salesianostriana.dam.ejercicio_evaluacion1.repository.PlaceRepository;
+import com.salesianostriana.dam.ejercicio_evaluacion1.repository.TagRepository;
 import com.salesianostriana.dam.ejercicio_evaluacion1.service.PlaceService;
+import com.salesianostriana.dam.ejercicio_evaluacion1.service.TagService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +19,9 @@ public class PlaceController {
 
     private final PlaceService placeService;
     private final PlaceRepository placeRepository;
+
+    private final TagService tagService;
+    private final TagRepository tagRepository;
 
     @GetMapping("/place/")
     public ResponseEntity<List<Place>> obtenerTodos() {
@@ -61,6 +67,13 @@ public class PlaceController {
             return ResponseEntity.notFound().build();
         }
     }
+
+ /*  @PutMapping("/place/id/tag/add/{nuevo_tag")
+    public ResponseEntity<Place> agregarTag (@RequestBody Place place, @PathVariable Long id){
+
+        return agregarTag();
+    } */
+
 
 
 
