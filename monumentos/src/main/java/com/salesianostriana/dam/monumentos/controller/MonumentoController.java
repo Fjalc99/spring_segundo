@@ -45,12 +45,11 @@ public class MonumentoController {
         return ResponseEntity.ok(result);
     }
 
-    @GetMapping("/monumento/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Monumento> obtenerMonumentoPorId(@PathVariable Long id) {
-        Monumento monumento = monumentorepository.findById(id).orElse(null);
-
-        return monumento != null ? ResponseEntity.ok(monumento) : ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-
+        return ResponseEntity.of(
+            monumentorepository.findById(id)
+        );
     }
 
     @PostMapping
