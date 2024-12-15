@@ -15,7 +15,7 @@ public class Producto {
 
     private Long id;
     private String nombre;
-    private double desc;
+    private String desc;
     private double pvp;
     private List<String> imagenes;
     private Categoria categoria;
