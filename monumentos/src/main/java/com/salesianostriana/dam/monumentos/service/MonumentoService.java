@@ -1,5 +1,6 @@
 package com.salesianostriana.dam.monumentos.service;
 
+import com.salesianostriana.dam.monumentos.error.MonumentoNotFoundException;
 import com.salesianostriana.dam.monumentos.models.Monumento;
 import com.salesianostriana.dam.monumentos.repository.MonumentoRepository;
 import lombok.RequiredArgsConstructor;
@@ -13,8 +14,9 @@ public class MonumentoService {
 
     private final MonumentoRepository monumentoRepository;
 
-    public Optional<Monumento> obtenerMonumentoPorId(Long id) {
-        return monumentoRepository.findById(id);
+    public Monumento obtenerMonumentoPorId(Long id) {
+        return monumentoRepository.findById(id)
+                .orElseThrow (() -> new MonumentoNotFoundException(id));
     }
 
     public void guardarMonumento(Monumento monumento) {
@@ -25,7 +27,7 @@ public class MonumentoService {
         monumentoRepository.deleteById(id);
     }
 
-    public Optional<Monumento> editarMonumento(Monumento monumento, Long id) {
+    public Monumento editarMonumento(Monumento monumento, Long id) {
         return monumentoRepository.findById(id)
                 .map(m -> {
                     m.setNombreCiudad(monumento.getNombreCiudad());
@@ -37,12 +39,17 @@ public class MonumentoService {
                     m.setCodPais(monumento.getCodPais());
                     m.setNombrePais(monumento.getNombrePais());
                     return monumentoRepository.save(m);
-                });
+                })
+                .orElseThrow(() -> new MonumentoNotFoundException(id));
 
     }
 
     public List<Monumento> query(String sortDirection) {
         List<Monumento> result = monumentoRepository.findAll();
+
+        if (result.isEmpty()){
+            throw new MonumentoNotFoundException();
+        }
 
         if (sortDirection.equalsIgnoreCase("asc"))
             result.sort(Comparator.comparing(Monumento::getNombreCiudad));
@@ -51,5 +58,8 @@ public class MonumentoService {
 
         return Collections.unmodifiableList(result);
     }
+
+
+
 
 }
