@@ -13,10 +13,6 @@ public class MonumentoService {
 
     private final MonumentoRepository monumentoRepository;
 
-    public List<Monumento> obtenerMonumentos() {
-        return monumentoRepository.findAll();
-    }
-
     public Optional<Monumento> obtenerMonumentoPorId(Long id) {
         return monumentoRepository.findById(id);
     }
