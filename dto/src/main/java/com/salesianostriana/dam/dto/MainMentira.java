@@ -13,9 +13,11 @@ import java.util.List;
 public class MainMentira {
      public static  void main(String[] args) {
 
-         Categoria categoria = new Categoria();
-         categoria.setId(1L);
-         categoria.setNombre("Categoria 1");
+         Categoria categoria = Categoria.builder()
+                 .id(1L)
+                 .nombre("Categoria 1")
+                 .build();
+
 
             Producto producto = Producto.builder()
                     .id(1L)
