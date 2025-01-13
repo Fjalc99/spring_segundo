@@ -1,1 +1,1 @@
-insert into productos(descripcion, nombre, precio,id) values('Lorem impsum','botellin fresquito',1.0, nextval('productos_seq'))
+insert into productos(descripcion, nombre, precio,id) values('Lorem impsum','botellin fresquito',1.0, nextval('productos_seq'));
