@@ -165,7 +165,7 @@ public class MonumentoController {
     @PostMapping
     public ResponseEntity<Monumento> crearMonumento(@RequestBody Monumento monumento) {
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(monumentorepository.save(monumento));
+                .body(monumentoService.guardarMonumento(monumento));
     }
 
 
@@ -211,7 +211,7 @@ public class MonumentoController {
     })
     @DeleteMapping("/{id}")
     public ResponseEntity<?> eliminarMonumento(@PathVariable Long id) {
-        monumentorepository.deleteById(id);
+        monumentoService.eliminarMonumento(id);
         return ResponseEntity.noContent().build();
     }
 }

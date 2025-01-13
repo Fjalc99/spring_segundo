@@ -19,8 +19,8 @@ public class MonumentoService {
                 .orElseThrow (() -> new MonumentoNotFoundException(id));
     }
 
-    public void guardarMonumento(Monumento monumento) {
-        monumentoRepository.save(monumento);
+    public Monumento guardarMonumento(Monumento monumento) {
+      return   monumentoRepository.save(monumento);
     }
 
     public void eliminarMonumento(Long id) {
