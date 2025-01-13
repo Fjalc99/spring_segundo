@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/categoria/")
+@RequestMapping("/categoria")
 @RequiredArgsConstructor
 public class CategoriaController {
 
@@ -26,7 +26,7 @@ public class CategoriaController {
     }
 
     @GetMapping("/{id}")
-    public GetCategoriaDto getByIdCategoria(Long id) {
+    public GetCategoriaDto getByIdCategoria(@PathVariable  Long id) {
         return GetCategoriaDto.of(categoriaService.findById(id));
     }
 
