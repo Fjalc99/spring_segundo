@@ -1,12 +1,13 @@
 package com.salesianos.data.model;
 
+
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -15,7 +16,7 @@ import java.util.Objects;
 @Builder
 @Entity
 @ToString
-public class Categoria {
+public class Pelicula {
 
     @Id
     @GeneratedValue
@@ -23,26 +24,24 @@ public class Categoria {
 
     private String nombre;
 
-    @OneToMany(mappedBy = "categoria", fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "peliculas", fetch = FetchType.EAGER)
     @Builder.Default
-    @ToString.Exclude  //esto es para excluir este atributo del tostring
-    private List<Producto> productos = new ArrayList<>();
+    @ToString.Exclude
+    @Setter(AccessLevel.NONE)
+    private Set<Actor> actores = new HashSet<>();
 
 
-    //Metodos helpers
+    //Metodo helper
 
-    public void addProducto(Producto p){
-        p.setCategoria(this);
-        this.getProductos().add(p);
+    public void addActores (Actor actor){
+       actor.getPeliculas().add(this);
+       actores.add(actor);
     }
 
-
-    public  void removeProducto(Producto p){
-        p.setCategoria(null);
-        this.productos.remove(p);
+    public void removeActores(Actor actor){
+        actores.remove(actor);
+        actor.getPeliculas().remove(this);
     }
-
-
 
 
     @Override
@@ -52,8 +51,8 @@ public class Categoria {
         Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass() : o.getClass();
         Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
         if (thisEffectiveClass != oEffectiveClass) return false;
-        Categoria categoria = (Categoria) o;
-        return getId() != null && Objects.equals(getId(), categoria.getId());
+        Pelicula pelicula = (Pelicula) o;
+        return getId() != null && Objects.equals(getId(), pelicula.getId());
     }
 
     @Override

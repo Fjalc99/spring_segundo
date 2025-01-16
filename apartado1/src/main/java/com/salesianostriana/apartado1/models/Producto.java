@@ -1,21 +1,23 @@
-package com.salesianos.data.model;
+package com.salesianostriana.apartado1.models;
 
-import jakarta.persistence.*;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
-@Getter
 @Setter
-@AllArgsConstructor
-@NoArgsConstructor
+@Getter
 @Builder
-@Entity
+@NoArgsConstructor
+@AllArgsConstructor
 @ToString
-public class Categoria {
+@Entity
+public class Producto {
 
     @Id
     @GeneratedValue
@@ -23,27 +25,10 @@ public class Categoria {
 
     private String nombre;
 
-    @OneToMany(mappedBy = "categoria", fetch = FetchType.EAGER)
-    @Builder.Default
-    @ToString.Exclude  //esto es para excluir este atributo del tostring
-    private List<Producto> productos = new ArrayList<>();
+    private double pvp;
 
-
-    //Metodos helpers
-
-    public void addProducto(Producto p){
-        p.setCategoria(this);
-        this.getProductos().add(p);
-    }
-
-
-    public  void removeProducto(Producto p){
-        p.setCategoria(null);
-        this.productos.remove(p);
-    }
-
-
-
+    @ManyToOne
+    private Categoria categoria;
 
     @Override
     public final boolean equals(Object o) {
@@ -52,8 +37,8 @@ public class Categoria {
         Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass() : o.getClass();
         Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
         if (thisEffectiveClass != oEffectiveClass) return false;
-        Categoria categoria = (Categoria) o;
-        return getId() != null && Objects.equals(getId(), categoria.getId());
+        Producto producto = (Producto) o;
+        return getId() != null && Objects.equals(getId(), producto.getId());
     }
 
     @Override

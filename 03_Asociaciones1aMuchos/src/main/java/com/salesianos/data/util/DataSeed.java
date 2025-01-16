@@ -8,7 +8,9 @@ import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import javax.swing.text.html.Option;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
@@ -21,6 +23,13 @@ public class DataSeed {
     public void run() {
 
         Categoria c = categoriaRepository.getReferenceById(1L);
+      /*
+        Esta es la que usar terminarla
+      Optional<Categoria> optionalCategoria = categoriaRepository.findById(1L);
+
+       if (optionalCategoria.isPresent()){
+
+        }*/
 
         Producto p = Producto.builder()
                 .nombre("Un producto")

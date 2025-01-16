@@ -35,16 +35,8 @@ public class Producto {
     private Categoria categoria;
 
 
-    //Helpers
-    public void addCategoria(Categoria categoria){
-        this.categoria = categoria;
-        categoria.getProductos().add(this);
-    }
 
-    public void removeCategoria(Categoria categoria){
-        categoria.getProductos().remove(this);
-        this.categoria = null;
-    }
+
 
 
     @Override

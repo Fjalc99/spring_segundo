@@ -1,20 +1,21 @@
-package com.salesianos.data.model;
+package com.salesianostriana.apartado1.models;
+
 
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
-@Getter
 @Setter
-@AllArgsConstructor
-@NoArgsConstructor
+@Getter
 @Builder
-@Entity
+@NoArgsConstructor
+@AllArgsConstructor
 @ToString
+@Entity
 public class Categoria {
 
     @Id
@@ -23,25 +24,37 @@ public class Categoria {
 
     private String nombre;
 
-    @OneToMany(mappedBy = "categoria", fetch = FetchType.EAGER)
+
+    @OneToMany(mappedBy = "categoria",
+    fetch = FetchType.EAGER)
     @Builder.Default
-    @ToString.Exclude  //esto es para excluir este atributo del tostring
-    private List<Producto> productos = new ArrayList<>();
+    private Set<Producto> listaProductos = new HashSet<>();
 
 
-    //Metodos helpers
 
-    public void addProducto(Producto p){
-        p.setCategoria(this);
-        this.getProductos().add(p);
-    }
+    @OneToMany
+    @Builder.Default
+    private Set<Categoria> categoriaSuperior = new HashSet<>();
 
 
-    public  void removeProducto(Producto p){
-        p.setCategoria(null);
-        this.productos.remove(p);
-    }
+    //Helper
+     public void addProducto(Producto p){
+         p.setCategoria(this);
+         listaProductos.add(p);
+     }
 
+     public void removeProducto(Producto p){
+         listaProductos.remove(p);
+         p.setCategoria(null);
+     }
+
+     public void addCategoriaSuperior(Categoria categoria){
+         categoriaSuperior.add(categoria);
+     }
+
+     public void removeCategoriaSuperior(Categoria categoria){
+         categoriaSuperior.remove(categoria);
+     }
 
 
 
@@ -61,3 +74,4 @@ public class Categoria {
         return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode() : getClass().hashCode();
     }
 }
+

@@ -1,12 +1,16 @@
 package com.salesianos.data.model;
 
-import jakarta.persistence.*;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -15,33 +19,23 @@ import java.util.Objects;
 @Builder
 @Entity
 @ToString
-public class Categoria {
+public class Actor {
 
     @Id
     @GeneratedValue
-    private Long id;
+     private Long id;
 
     private String nombre;
 
-    @OneToMany(mappedBy = "categoria", fetch = FetchType.EAGER)
+    private String apellidos;
+
+
+    @ManyToMany
     @Builder.Default
-    @ToString.Exclude  //esto es para excluir este atributo del tostring
-    private List<Producto> productos = new ArrayList<>();
+    private Set<Pelicula> peliculas = new HashSet<>();
 
 
-    //Metodos helpers
-
-    public void addProducto(Producto p){
-        p.setCategoria(this);
-        this.getProductos().add(p);
-    }
-
-
-    public  void removeProducto(Producto p){
-        p.setCategoria(null);
-        this.productos.remove(p);
-    }
-
+    //Metodos helper
 
 
 
@@ -52,8 +46,8 @@ public class Categoria {
         Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass() : o.getClass();
         Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
         if (thisEffectiveClass != oEffectiveClass) return false;
-        Categoria categoria = (Categoria) o;
-        return getId() != null && Objects.equals(getId(), categoria.getId());
+        Actor actor = (Actor) o;
+        return getId() != null && Objects.equals(getId(), actor.getId());
     }
 
     @Override
