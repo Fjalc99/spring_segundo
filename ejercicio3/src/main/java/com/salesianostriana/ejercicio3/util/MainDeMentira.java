@@ -37,7 +37,7 @@ public class MainDeMentira {
                 .modelo("FX 2")
                 .estado(true)
                 .build();
-/*
+
         Estacion estacion1 = Estacion.builder()
                 .numero(101L)
                 .nombre("Estación Central")
@@ -64,7 +64,7 @@ public class MainDeMentira {
 
         estacionRepository.saveAll(List.of(estacion1, estacion2, estacion3));
         bicicletaRepository.saveAll(List.of(bicicleta1, bicicleta2));
-
+/*
         Uso uso1 = Uso.builder()
                 .fechaInicio(LocalDateTime.of(2025, 1, 20, 10, 0))
                 .fechaFin(LocalDateTime.of(2025, 1, 20, 11, 0))
@@ -83,15 +83,22 @@ public class MainDeMentira {
 
         usoRepository.saveAll(List.of(uso1, uso2));
 
+
+
         bicicleta1.addUso(uso1);
         bicicleta2.addUso(uso2);
 
         estacion1.addUso(uso1);
         estacion2.addUso(uso2);
+        */
 
-        estacionRepository.saveAll(List.of(estacion1, estacion2)); */
+        estacionRepository.saveAll(List.of(estacion1, estacion2));
         bicicletaRepository.saveAll(List.of(bicicleta1, bicicleta2));
         System.out.println(bicicletaRepository.findByMarca("Giant"));
+
+        System.out.println(bicicletaRepository.findByMarcaContaining("Trek"));
+
+
     }
 
 }

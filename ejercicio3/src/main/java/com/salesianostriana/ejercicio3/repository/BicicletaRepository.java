@@ -12,6 +12,8 @@ public interface BicicletaRepository extends JpaRepository<Bicicleta, Long> {
 
     List<Bicicleta>findByMarca(String Marca);
 
-    long countAll();
+    List<Bicicleta>findByMarcaContaining(String Marca);
+
+
 
 }
