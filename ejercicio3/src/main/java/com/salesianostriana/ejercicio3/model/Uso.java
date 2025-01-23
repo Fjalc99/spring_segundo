@@ -1,42 +1,32 @@
-package com.salesianostriana.apartado2.models;
+package com.salesianostriana.ejercicio3.model;
 
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
-@Setter
 @Getter
-@Builder
-@NoArgsConstructor
+@Setter
 @AllArgsConstructor
-@ToString
+@NoArgsConstructor
+@Builder
 @Entity
-public class Profesor {
-
+@ToString
+public class Uso {
     @Id
     @GeneratedValue
     private Long id;
+    private LocalDateTime fechaInicio;
+    private LocalDateTime fechaFin;
+    private double coste;
 
-    private String nombre;
+    @ManyToOne
+    private Bicicleta bicicleta;
 
-    private String email;
-
-    private double puntuacion;
-
-    @Builder.Default
-    @ToString.Exclude
-    @OneToMany(mappedBy = "profesor",
-    fetch = FetchType.EAGER)
-    private List<CursoOnline> cursos = new ArrayList<>();
-
-
-    
-
-
+    @ManyToOne
+    private Estacion estacion;
     @Override
     public final boolean equals(Object o) {
         if (this == o) return true;
@@ -44,8 +34,8 @@ public class Profesor {
         Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass() : o.getClass();
         Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
         if (thisEffectiveClass != oEffectiveClass) return false;
-        Profesor profesor = (Profesor) o;
-        return getId() != null && Objects.equals(getId(), profesor.getId());
+        Uso uso = (Uso) o;
+        return getId() != null && Objects.equals(getId(), uso.getId());
     }
 
     @Override
