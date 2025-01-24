@@ -17,6 +17,7 @@ public class MainDeMentira {
 
 
     private final TrabajadorService trabajadorService;
+    private final TrabajadorRepository trabajadorRepository;
 
     @PostConstruct
     public void run(){
@@ -39,6 +40,8 @@ public class MainDeMentira {
 
         List<Trabajador> trabajadores = trabajadorService.getAll();
         trabajadores.forEach(System.out::println);
+
+
 
     }
 }

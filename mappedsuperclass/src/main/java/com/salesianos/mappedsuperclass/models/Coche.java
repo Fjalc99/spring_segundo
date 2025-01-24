@@ -2,7 +2,6 @@ package com.salesianos.mappedsuperclass.models;
 
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.MappedSuperclass;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 

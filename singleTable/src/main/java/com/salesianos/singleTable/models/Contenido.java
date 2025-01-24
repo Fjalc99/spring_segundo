@@ -17,7 +17,7 @@ import java.util.Objects;
 @ToString
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "tipo_contenido", discriminatorType = DiscriminatorType.STRING)
-public class Contenido {
+public abstract class Contenido {
 
 
     @Id
