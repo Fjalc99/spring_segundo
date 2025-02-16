@@ -8,7 +8,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.Set;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -23,9 +25,21 @@ public class UserService {
                 .username(createUserRequest.username())
                 .password(passwordEncoder.encode(createUserRequest.password()))
                 .roles(Set.of(UserRole.USER))
+                .email(createUserRequest.email())
+                .enable(false)
                 .build();
 
         return userRepository.save(user);
     }
 
+
+
+    public Optional<User> findById(UUID id) {
+        return userRepository.findById(id);
+    }
+
+ 
+    public void save(User user) {
+        userRepository.save(user);
+    }
 }

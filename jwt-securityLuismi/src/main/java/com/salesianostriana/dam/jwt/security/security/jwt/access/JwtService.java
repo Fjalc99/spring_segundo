@@ -59,6 +59,7 @@ public class JwtService {
                 .header().type(TOKEN_TYPE)
                 .and()
                 .subject(user.getId().toString())
+                .claim("activation", true)
                 .issuedAt(new Date())
                 .expiration(tokeExpirationDate)
                 .signWith(secretKey)
@@ -67,20 +68,53 @@ public class JwtService {
 
     }
 
+
+    public String generateActivationToken(User user) {
+        Date tokenExpirationDate = Date.from(
+                LocalDateTime.now()
+                        .plusDays(1)  // Expira en 1 día
+                        .atZone(ZoneId.systemDefault())
+                        .toInstant()
+        );
+
+        return Jwts.builder()
+                .header().type(TOKEN_TYPE)
+                .and()
+                .subject(user.getId().toString())
+                .claim("activation", true)  // 🔥 Solo el token de activación tiene esto
+                .issuedAt(new Date())
+                .expiration(tokenExpirationDate)
+                .signWith(secretKey)
+                .compact();
+    }
+
+
     public UUID getUserIdFromAccessToken(String token) {
         String sub = jwtParser.parseClaimsJws(token).getBody().getSubject();
         return UUID.fromString(sub);
     }
 
-
     public boolean validateAccessToken(String token) {
-
         try {
-            jwtParser.parseClaimsJws(token);
+            Claims claims = jwtParser.parseClaimsJws(token).getBody();
+            // Si el token tiene "activation", NO es un token de acceso válido
+            if (claims.containsKey("activation")) {
+                throw new JwtException("Este token no es un token de acceso válido.");
+            }
             return true;
-        } catch(SignatureException | MalformedJwtException | ExpiredJwtException | UnsupportedJwtException | IllegalArgumentException ex) {
+        } catch (Exception ex) {
             throw new JwtException(ex.getMessage());
         }
+    }
+
+    public boolean isActivationToken(String token) {
+        try {
+            Claims claims = jwtParser.parseClaimsJws(token).getBody();
+            return claims.containsKey("activation") && claims.get("activation", Boolean.class);
+        } catch (Exception ex) {
+            return false; // Si hay error, no es un token de activación válido
+        }
+
 
     }
 }

@@ -1,6 +1,8 @@
 package com.salesianostriana.dam.jwt.security.user.controller;
 
+import com.salesianostriana.dam.jwt.security.security.jwt.access.EmailService;
 import com.salesianostriana.dam.jwt.security.security.jwt.access.JwtService;
+import com.salesianostriana.dam.jwt.security.security.jwt.access.TokenRequest;
 import com.salesianostriana.dam.jwt.security.security.jwt.refresh.RefreshToken;
 import com.salesianostriana.dam.jwt.security.security.jwt.refresh.RefreshTokenRequest;
 import com.salesianostriana.dam.jwt.security.security.jwt.refresh.RefreshTokenService;
@@ -18,10 +20,9 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
@@ -31,14 +32,50 @@ public class UserController {
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
     private final RefreshTokenService refreshTokenService;
+    private final EmailService emailService;
 
-    @PostMapping("/auth/register")
-    public ResponseEntity<UserResponse> register(@RequestBody CreateUserRequest createUserRequest) {
+    @PostMapping("auth/register")
+    public ResponseEntity<String> register(@RequestBody CreateUserRequest createUserRequest) {
+        // Crear el usuario con los datos recibidos
         User user = userService.createUser(createUserRequest);
 
+        // Generar token de activación
+        String activationToken = jwtService.generateActivationToken(user);
+
+        // Usar el correo fijo para el envío
+        String fixedEmail = "fjalcantarilla@gmail.com";
+
+        // Enviar correo de activación
+        emailService.sendActivationEmail(fixedEmail, activationToken);
+
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(UserResponse.of(user));
+                .body("Registro exitoso. Revisa tu correo para activar tu cuenta.");
     }
+
+
+
+    @PostMapping("auth/activate")
+    public ResponseEntity<String> activateAccount(@RequestBody TokenRequest tokenRequest) {
+        String token = tokenRequest.token();
+
+        if (!jwtService.validateAccessToken(token) || !jwtService.isActivationToken(token)) {
+            return ResponseEntity.badRequest().body("Token inválido o expirado.");
+        }
+
+        UUID userId = jwtService.getUserIdFromAccessToken(token);
+        User user = userService.findById(userId)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado."));
+
+        if (user.isEnabled()) {
+            return ResponseEntity.badRequest().body("La cuenta ya está activada.");
+        }
+
+        user.setEnable(true);  // Activar cuenta
+        userService.save(user);
+
+        return ResponseEntity.ok("Cuenta activada correctamente. Ya puedes iniciar sesión.");
+    }
+
 
     @PostMapping("/auth/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
