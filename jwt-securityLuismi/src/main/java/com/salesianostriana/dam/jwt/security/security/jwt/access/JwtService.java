@@ -95,26 +95,18 @@ public class JwtService {
     }
 
     public boolean validateAccessToken(String token) {
-        try {
+
             Claims claims = jwtParser.parseClaimsJws(token).getBody();
 
             if (claims.containsKey("activation")) {
                 throw new JwtException("Este token no es un token de acceso válido.");
             }
             return true;
-        } catch (Exception ex) {
-            throw new JwtException(ex.getMessage());
-        }
     }
 
     public boolean isActivationToken(String token) {
-        try {
             Claims claims = jwtParser.parseClaimsJws(token).getBody();
             return claims.containsKey("activation") && claims.get("activation", Boolean.class);
-        } catch (Exception ex) {
-            return false;
-        }
-
 
     }
 }

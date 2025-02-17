@@ -11,6 +11,7 @@ import com.salesianostriana.dam.jwt.security.user.dto.LoginRequest;
 import com.salesianostriana.dam.jwt.security.user.dto.UserResponse;
 import com.salesianostriana.dam.jwt.security.user.model.User;
 import com.salesianostriana.dam.jwt.security.user.service.UserService;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,7 +35,7 @@ public class UserController {
     private final RefreshTokenService refreshTokenService;
     private final EmailService emailService;
 
-    @PostMapping("auth/register")
+    @PostMapping("/auth/register")
     public ResponseEntity<String> register(@RequestBody CreateUserRequest createUserRequest) {
 
         User user = userService.createUser(createUserRequest);
@@ -54,7 +55,7 @@ public class UserController {
 
 
 
-    @PostMapping("auth/activate")
+    @PostMapping("/auth/activate")
     public ResponseEntity<String> activateAccount(@RequestBody TokenRequest tokenRequest) {
         String token = tokenRequest.token();
 
@@ -64,13 +65,13 @@ public class UserController {
 
         UUID userId = jwtService.getUserIdFromAccessToken(token);
         User user = userService.findById(userId)
-                .orElseThrow(() -> new RuntimeException("Usuario no encontrado."));
+                .orElseThrow(() -> new EntityNotFoundException("Usuario no encontrado."));
 
         if (user.isEnabled()) {
             return ResponseEntity.badRequest().body("La cuenta ya está activada.");
         }
 
-        user.setEnable(true);  // Activar cuenta
+        user.setEnable(true);
         userService.save(user);
 
         return ResponseEntity.ok("Cuenta activada correctamente. Ya puedes iniciar sesión.");
