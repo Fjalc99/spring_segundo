@@ -72,7 +72,7 @@ public class JwtService {
     public String generateActivationToken(User user) {
         Date tokenExpirationDate = Date.from(
                 LocalDateTime.now()
-                        .plusDays(1)  // Expira en 1 día
+                        .plusDays(1)
                         .atZone(ZoneId.systemDefault())
                         .toInstant()
         );
@@ -81,7 +81,7 @@ public class JwtService {
                 .header().type(TOKEN_TYPE)
                 .and()
                 .subject(user.getId().toString())
-                .claim("activation", true)  // 🔥 Solo el token de activación tiene esto
+                .claim("activation", true)
                 .issuedAt(new Date())
                 .expiration(tokenExpirationDate)
                 .signWith(secretKey)
@@ -97,7 +97,7 @@ public class JwtService {
     public boolean validateAccessToken(String token) {
         try {
             Claims claims = jwtParser.parseClaimsJws(token).getBody();
-            // Si el token tiene "activation", NO es un token de acceso válido
+
             if (claims.containsKey("activation")) {
                 throw new JwtException("Este token no es un token de acceso válido.");
             }
@@ -112,7 +112,7 @@ public class JwtService {
             Claims claims = jwtParser.parseClaimsJws(token).getBody();
             return claims.containsKey("activation") && claims.get("activation", Boolean.class);
         } catch (Exception ex) {
-            return false; // Si hay error, no es un token de activación válido
+            return false;
         }
 
 

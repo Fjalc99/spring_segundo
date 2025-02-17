@@ -36,16 +36,16 @@ public class UserController {
 
     @PostMapping("auth/register")
     public ResponseEntity<String> register(@RequestBody CreateUserRequest createUserRequest) {
-        // Crear el usuario con los datos recibidos
+
         User user = userService.createUser(createUserRequest);
 
-        // Generar token de activación
+
         String activationToken = jwtService.generateActivationToken(user);
 
-        // Usar el correo fijo para el envío
+
         String fixedEmail = "fjalcantarilla@gmail.com";
 
-        // Enviar correo de activación
+
         emailService.sendActivationEmail(fixedEmail, activationToken);
 
         return ResponseEntity.status(HttpStatus.CREATED)
